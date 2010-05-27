@@ -215,12 +215,13 @@ class basexmpp(object):
 				with self.lock:
 					self.event_handlers[name].pop(self.event_handlers[name].index(handler))
 	
-	def makeMessage(self, mto, mbody=None, msubject=None, mtype=None, mhtml=None, mfrom=None, mnick=None):
+	def makeMessage(self, mto, mbody=None, msubject=None, mtype=None, mhtml=None, mfrom=None, mnick=None, mid=None):
 		message = self.Message(sto=mto, stype=mtype, sfrom=mfrom)
 		message['body'] = mbody
 		message['subject'] = msubject
 		if mnick is not None: message['nick'] = mnick
 		if mhtml is not None: message['html']['html'] = mhtml
+                if mid is not None: message['id'] = mid
 		return message
 	
 	def makePresence(self, pshow=None, pstatus=None, ppriority=None, pto=None, ptype=None, pfrom=None):
@@ -232,8 +233,8 @@ class basexmpp(object):
 		presence['status'] = pstatus
 		return presence
 	
-	def sendMessage(self, mto, mbody, msubject=None, mtype=None, mhtml=None, mfrom=None, mnick=None):
-		self.send(self.makeMessage(mto,mbody,msubject,mtype,mhtml,mfrom,mnick))
+	def sendMessage(self, mto, mbody, msubject=None, mtype=None, mhtml=None, mfrom=None, mnick=None, mid=None):
+		self.send(self.makeMessage(mto,mbody,msubject,mtype,mhtml,mfrom,mnick,mid))
 	
 	def sendPresence(self, pshow=None, pstatus=None, ppriority=None, pto=None, pfrom=None, ptype=None):
 		self.send(self.makePresence(pshow,pstatus,ppriority,pto, ptype=ptype, pfrom=pfrom))
